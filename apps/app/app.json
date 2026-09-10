@@ -1,0 +1,42 @@
+{
+  "expo": {
+    "name": "MAHEALL",
+    "slug": "maheall-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#064e3b"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "org.maheall.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#064e3b"
+      },
+      "package": "org.maheall.app"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "scheme": "maheall",
+    "extra": {
+      "eas": {
+        "projectId": "maheall-member-app"
+      }
+    }
+  }
+}

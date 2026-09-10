@@ -1,0 +1,17 @@
+{
+  "name": "maheall",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev:api": "pnpm --filter @maheall/api dev",
+    "dev:web": "pnpm --filter @maheall/web dev",
+    "build:api": "pnpm --filter @maheall/api build",
+    "build:web": "pnpm --filter @maheall/web build",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck",
+    "test": "pnpm -r test"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  }
+}

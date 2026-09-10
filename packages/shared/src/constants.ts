@@ -1,0 +1,224 @@
+export const APP_NAME = 'MAHEALL';
+export const APP_VERSION = '0.1.0';
+
+export const JWT_ACCESS_EXPIRY = '15m';
+export const JWT_REFRESH_EXPIRY = '7d';
+export const OTP_EXPIRY_MINUTES = 10;
+export const OTP_MAX_ATTEMPTS = 5;
+export const OTP_COOLDOWN_MINUTES = 15;
+
+export const PIRIVU_MONTHS = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'
+] as const;
+
+export const MAHAL_FACTIONS = [
+  'SUNNI_EK',
+  'SUNNI_AP',
+  'KNM',
+  'JAMAAT',
+  'OTHER',
+] as const;
+
+export const REGISTRATION_TYPES = [
+  'SOCIETY',
+  'TRUST',
+  'WAQF',
+  'OTHER',
+] as const;
+
+export const INCOME_CATEGORIES = [
+  'PIRIVU',
+  'DONATION',
+  'JUMA_COLLECTION',
+  'HUNDI',
+  'WAQF_RENT',
+  'MADRASA_FEES',
+  'CERTIFICATE_FEES',
+  'NERCHA_AUCTION',
+  'FUNDRAISER',
+  'QURBANI_SKIN',
+  'OTHER',
+] as const;
+
+export type IncomeCategory = typeof INCOME_CATEGORIES[number];
+
+export const EXPENSE_CATEGORIES = [
+  'SALARY_IMAM',
+  'SALARY_MUKRI',
+  'SALARY_MADRASA_TEACHER',
+  'SALARY_OTHER',
+  'UTILITIES',
+  'MAINTENANCE',
+  'WELFARE',
+  'WAQF_CESS',
+  'MADRASA_BOARD_FEES',
+  'EVENTS',
+  'CONSTRUCTION',
+  'OTHER',
+] as const;
+
+export type ExpenseCategory = typeof EXPENSE_CATEGORIES[number];
+
+export const FUND_TYPES = ['GENERAL', 'ZAKAT', 'MADRASA'] as const;
+export type FundType = typeof FUND_TYPES[number];
+
+export const PAYMENT_METHODS = [
+  'CASH',
+  'MANUAL_UPI',
+  'GATEWAY',
+  'BANK_TRANSFER',
+] as const;
+export type PaymentMethod = typeof PAYMENT_METHODS[number];
+
+export const ANNOUNCEMENT_CATEGORIES = [
+  'GENERAL',
+  'EMERGENCY',
+  'JANAZAH',
+  'FINANCE',
+  'MADRASA',
+  'EVENT',
+  'WELFARE',
+  'COMMUNITY',
+] as const;
+
+export const ANNOUNCEMENT_PRIORITIES = ['NORMAL', 'HIGH', 'URGENT'] as const;
+
+export const ANNOUNCEMENT_AUDIENCES = [
+  'ALL',
+  'COMMITTEE',
+  'MADRASA',
+  'WARD',
+] as const;
+
+export const MAHAL_ROLES = [
+  'MAHAL_ADMIN',
+  'TREASURER',
+  'COMMITTEE',
+  'MADRASA_ADMIN',
+  'MADRASA_TEACHER',
+  'VIEWER',
+  'FAMILY_HEAD',
+  'MEMBER',
+] as const;
+
+export type MahalRole = typeof MAHAL_ROLES[number];
+
+export const PERMISSIONS = [
+  // Family
+  'VIEW_FAMILY_LIST',
+  'VIEW_FAMILY_DETAIL',
+  'CREATE_FAMILY',
+  'EDIT_FAMILY',
+  'DELETE_FAMILY',
+  'VIEW_FAMILY_FINANCE',
+  // Member
+  'VIEW_MEMBER_LIST',
+  'VIEW_MEMBER_DETAIL',
+  'CREATE_MEMBER',
+  'EDIT_MEMBER',
+  // Finance
+  'VIEW_INCOME',
+  'CREATE_INCOME',
+  'EDIT_INCOME',
+  'VIEW_EXPENSE',
+  'CREATE_EXPENSE',
+  'EDIT_EXPENSE',
+  'VIEW_REPORTS',
+  'RECORD_PIRIVU',
+  'VIEW_PIRIVU_ARREARS',
+  // Announcements
+  'VIEW_ANNOUNCEMENTS',
+  'CREATE_DRAFT_ANNOUNCEMENT',
+  'PUBLISH_ANNOUNCEMENT',
+  'DELETE_ANNOUNCEMENT',
+  // Prayer
+  'VIEW_PRAYER_SCHEDULE',
+  'MANAGE_PRAYER_SCHEDULE',
+  // Death Records
+  'VIEW_DEATH_RECORDS',
+  'CREATE_DEATH_RECORD',
+  'MANAGE_DEATH_RECORD_VISIBILITY',
+  // Certificates
+  'VIEW_CERTIFICATES',
+  'CREATE_CERTIFICATE',
+  // Madrasa
+  'VIEW_ALL_STUDENTS',
+  'MANAGE_STUDENTS',
+  'MANAGE_TEACHERS',
+  'MARK_ATTENDANCE',
+  'MANAGE_MADRASA_FEES',
+  'VIEW_OWN_CHILD',
+  // Requests
+  'VIEW_ALL_REQUESTS',
+  'MANAGE_REQUESTS',
+  'SUBMIT_REQUEST',
+  // Roles
+  'MANAGE_ROLES',
+  // Audit
+  'VIEW_AUDIT_LOGS',
+  // Website
+  'MANAGE_WEBSITE',
+  // Own data (member app)
+  'VIEW_OWN_FAMILY',
+  'VIEW_OWN_PAYMENTS',
+  'PAY_PIRIVU',
+  'VIEW_OWN_NOTIFICATIONS',
+] as const;
+
+export type Permission = typeof PERMISSIONS[number];
+
+export const ROLE_PERMISSIONS: Record<MahalRole, Permission[]> = {
+  MAHAL_ADMIN: [...PERMISSIONS], // all
+  TREASURER: [
+    'VIEW_FAMILY_LIST', 'VIEW_FAMILY_DETAIL', 'VIEW_FAMILY_FINANCE',
+    'VIEW_MEMBER_LIST',
+    'VIEW_INCOME', 'CREATE_INCOME', 'EDIT_INCOME',
+    'VIEW_EXPENSE', 'CREATE_EXPENSE', 'EDIT_EXPENSE',
+    'VIEW_REPORTS', 'RECORD_PIRIVU', 'VIEW_PIRIVU_ARREARS',
+    'VIEW_ANNOUNCEMENTS', 'VIEW_PRAYER_SCHEDULE',
+    'VIEW_CERTIFICATES',
+    'VIEW_AUDIT_LOGS',
+  ],
+  COMMITTEE: [
+    'VIEW_FAMILY_LIST', 'VIEW_FAMILY_DETAIL',
+    'VIEW_MEMBER_LIST', 'VIEW_MEMBER_DETAIL',
+    'VIEW_ANNOUNCEMENTS', 'CREATE_DRAFT_ANNOUNCEMENT',
+    'VIEW_PRAYER_SCHEDULE',
+    'VIEW_DEATH_RECORDS',
+    'RECORD_PIRIVU',
+  ],
+  MADRASA_ADMIN: [
+    'VIEW_ALL_STUDENTS', 'MANAGE_STUDENTS',
+    'MANAGE_TEACHERS', 'MARK_ATTENDANCE',
+    'MANAGE_MADRASA_FEES',
+    'VIEW_FAMILY_LIST', 'VIEW_FAMILY_DETAIL',
+    'VIEW_ANNOUNCEMENTS', 'VIEW_PRAYER_SCHEDULE',
+  ],
+  MADRASA_TEACHER: [
+    'VIEW_ALL_STUDENTS', // only own class filtered at service layer
+    'MARK_ATTENDANCE',
+    'VIEW_ANNOUNCEMENTS', 'VIEW_PRAYER_SCHEDULE',
+  ],
+  VIEWER: [
+    'VIEW_FAMILY_LIST', 'VIEW_FAMILY_DETAIL',
+    'VIEW_MEMBER_LIST',
+    'VIEW_INCOME', 'VIEW_EXPENSE', 'VIEW_REPORTS', 'VIEW_PIRIVU_ARREARS',
+    'VIEW_ANNOUNCEMENTS', 'VIEW_PRAYER_SCHEDULE',
+    'VIEW_CERTIFICATES',
+  ],
+  FAMILY_HEAD: [
+    'VIEW_OWN_FAMILY', 'VIEW_OWN_PAYMENTS', 'PAY_PIRIVU',
+    'VIEW_ANNOUNCEMENTS', 'VIEW_PRAYER_SCHEDULE',
+    'VIEW_DEATH_RECORDS',
+    'SUBMIT_REQUEST',
+    'VIEW_OWN_NOTIFICATIONS',
+    'VIEW_OWN_CHILD',
+  ],
+  MEMBER: [
+    'VIEW_ANNOUNCEMENTS', 'VIEW_PRAYER_SCHEDULE',
+    'VIEW_DEATH_RECORDS',
+    'VIEW_OWN_NOTIFICATIONS',
+    'VIEW_OWN_FAMILY',
+  ],
+};

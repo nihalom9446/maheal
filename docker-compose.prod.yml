@@ -1,0 +1,129 @@
+version: '3.8'
+
+services:
+  # ============================================================================
+  # POSTGRESQL DATABASE
+  # ============================================================================
+  db:
+    image: postgres:16-alpine
+    container_name: maheall-prod-db
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-maheall}
+      POSTGRES_USER: ${POSTGRES_USER:-maheall_admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Database password must be set}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./apps/api/src/database/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-maheall_admin} -d ${POSTGRES_DB:-maheall}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - maheall-internal
+    deploy:
+      resources:
+        limits:
+          memory: 1024M
+          cpus: '1.0'
+
+  # ============================================================================
+  # BACKEND API (NestJS + Fastify)
+  # ============================================================================
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: maheall-prod-api
+    restart: always
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      DATABASE_URL: postgres://${POSTGRES_USER:-maheall_admin}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB:-maheall}
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:?JWT Access Secret required}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:?JWT Refresh Secret required}
+      FRONTEND_URL: ${FRONTEND_URL:-https://app.maheall.in}
+      MSG91_AUTH_KEY: ${MSG91_AUTH_KEY:-}
+      MSG91_SENDER_ID: ${MSG91_SENDER_ID:-MAHAL}
+      MSG91_TEMPLATE_ID: ${MSG91_TEMPLATE_ID:-}
+      FCM_SERVER_KEY: ${FCM_SERVER_KEY:-}
+      STORAGE_ENDPOINT: ${STORAGE_ENDPOINT:-https://blr1.digitaloceanspaces.com}
+      STORAGE_REGION: ${STORAGE_REGION:-blr1}
+      STORAGE_BUCKET: ${STORAGE_BUCKET:-maheall-storage}
+      STORAGE_ACCESS_KEY: ${STORAGE_ACCESS_KEY:-}
+      STORAGE_SECRET_KEY: ${STORAGE_SECRET_KEY:-}
+      RAZORPAY_ENABLED: ${RAZORPAY_ENABLED:-false}
+      RAZORPAY_KEY_ID: ${RAZORPAY_KEY_ID:-}
+      RAZORPAY_KEY_SECRET: ${RAZORPAY_KEY_SECRET:-}
+      RAZORPAY_WEBHOOK_SECRET: ${RAZORPAY_WEBHOOK_SECRET:-}
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - maheall-internal
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.75'
+
+  # ============================================================================
+  # WEB FRONTEND (Next.js 15)
+  # ============================================================================
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    container_name: maheall-prod-web
+    restart: always
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-https://app.maheall.in/api/v1}
+    depends_on:
+      - api
+    networks:
+      - maheall-internal
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.75'
+
+  # ============================================================================
+  # REVERSE PROXY & AUTOMATED SSL (Caddy)
+  # ============================================================================
+  caddy:
+    image: caddy:2-alpine
+    container_name: maheall-prod-caddy
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - api
+      - web
+    networks:
+      - maheall-internal
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          cpus: '0.5'
+
+volumes:
+  pgdata:
+    driver: local
+  caddy_data:
+    driver: local
+  caddy_config:
+    driver: local
+
+networks:
+  maheall-internal:
+    driver: bridge

@@ -1,0 +1,23 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: maheall_postgres
+    environment:
+      POSTGRES_USER: maheall
+      POSTGRES_PASSWORD: maheall
+      POSTGRES_DB: maheall_dev
+    ports:
+      - '5432:5432'
+    volumes:
+      - maheall_postgres_data:/var/lib/postgresql/data
+      - ./apps/api/src/database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U maheall -d maheall_dev']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  maheall_postgres_data:

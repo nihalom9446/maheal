@@ -1,0 +1,1 @@
+export type { MahalRole, Permission } from '../constants';

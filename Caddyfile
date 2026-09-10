@@ -1,0 +1,66 @@
+{
+  # Global options
+  email {$ACME_EMAIL:admin@maheall.in}
+  admin off
+}
+
+# Production Domain
+{$DOMAIN:app.maheall.in} {
+  # Enable Gzip and Zstandard compression
+  encode zstd gzip
+
+  # Security Headers
+  header {
+    # HSTS (Strict-Transport-Security)
+    Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    # Prevent MIME-sniffing
+    X-Content-Type-Options "nosniff"
+    # Prevent clickjacking
+    X-Frame-Options "SAMEORIGIN"
+    # XSS Protection
+    X-XSS-Protection "1; mode=block"
+    # Referrer policy
+    Referrer-Policy "strict-origin-when-cross-origin"
+    # Permissions policy
+    Permissions-Policy "camera=(), microphone=(), geolocation=(self)"
+    # Hide server identification
+    -Server
+  }
+
+  # Next.js Static Asset Caching (Cache-Control: immutable)
+  @static {
+    path /_next/static/*
+    path /favicon.ico
+    path /images/*
+    path /icons/*
+  }
+  header @static {
+    Cache-Control "public, max-age=31536000, immutable"
+  }
+
+  # Backend API Routes
+  handle /api/* {
+    reverse_proxy api:3001 {
+      header_up Host {host}
+      header_up X-Real-IP {remote_host}
+      header_up X-Forwarded-For {remote_host}
+      header_up X-Forwarded-Proto {scheme}
+    }
+  }
+
+  # Frontend Next.js Web App
+  handle {
+    reverse_proxy web:3000 {
+      header_up Host {host}
+      header_up X-Real-IP {remote_host}
+      header_up X-Forwarded-For {remote_host}
+      header_up X-Forwarded-Proto {scheme}
+    }
+  }
+
+  # Structured Access Logging
+  log {
+    output stdout
+    format json
+  }
+}

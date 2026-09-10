@@ -1,0 +1,128 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Default body font and colors */
+  body {
+    font-family: var(--font-inter), Inter, system-ui, -apple-system, sans-serif;
+    background-color: #F7F8F5;
+    color: #102522;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    @apply selection:bg-[#063F35]/15 selection:text-[#063F35];
+  }
+
+  /* Headings typography */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-inter), Inter, system-ui, sans-serif;
+    color: #102522;
+  }
+
+  /* Arabic text isolation */
+  .arabic, .font-arabic {
+    font-family: 'Noto Naskh Arabic', 'Traditional Arabic', 'Amiri', serif;
+    direction: rtl;
+    unicode-bidi: isolate;
+  }
+
+  /* Focus visible accessibility */
+  :focus-visible {
+    outline: 2px solid #063F35;
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* Clean Institutional Button Styles */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-xs md:text-sm text-white bg-[#063F35] hover:bg-[#022C27] active:bg-[#022C27] transition-all duration-150 shadow-fine hover:shadow-elevated disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-xs md:text-sm text-[#063F35] bg-white hover:bg-stone-50 active:bg-stone-100 border border-stone-200 transition-all duration-150 shadow-fine hover:shadow-card disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .btn-accent {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-xs md:text-sm text-[#022C27] bg-[#C9A646] hover:bg-[#B38F34] active:bg-[#9E7E2C] transition-all duration-150 shadow-fine hover:shadow-card disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  /* Clean Elevated Surface Card */
+  .surface-card {
+    @apply bg-white rounded-2xl border border-stone-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.02)] transition-shadow duration-200;
+  }
+
+  .surface-card-hover {
+    @apply bg-white rounded-2xl border border-stone-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.02)] hover:shadow-[0_6px_24px_rgba(0,0,0,0.05)] hover:border-stone-300 transition-all duration-200;
+  }
+
+  /* Micro-interactions */
+  .hover-lift {
+    @apply transition-all duration-200 hover:-translate-y-0.5 hover:shadow-elevated;
+  }
+
+  /* Refined Badges */
+  .badge-forest {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#063F35]/10 text-[#063F35] border border-[#063F35]/15;
+  }
+
+  .badge-gold {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-[#F7F1DE] text-[#785E19] border border-[#E8DCB8];
+  }
+
+  .badge-success {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200;
+  }
+
+  .badge-danger {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-rose-50 text-rose-800 border border-rose-200;
+  }
+
+  .badge-neutral {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-md text-[11px] font-medium bg-stone-100 text-stone-700 border border-stone-200;
+  }
+}
+
+/* Subtle Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F7F8F5;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D3D8D6;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0A5C4D;
+}
+
+/* Print Styles for Certificates & Schedules */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 8mm;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  header, nav, footer, .no-print {
+    display: none !important;
+  }
+
+  main {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+}

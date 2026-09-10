@@ -1,0 +1,12 @@
+packages:
+  - 'apps/*'
+  - 'packages/*'
+allowBuilds:
+  '@nestjs/core': true
+  '@parcel/watcher': true
+  bcrypt: true
+  es5-ext: true
+  esbuild: true
+  msgpackr-extract: true
+  sharp: true
+  unrs-resolver: true
