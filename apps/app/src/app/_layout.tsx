@@ -20,12 +20,12 @@ function RootLayoutNav() {
     if (!isAuthenticated) {
       // If not authenticated, redirect to login
       if (!inAuthGroup) {
-        router.replace('/(auth)/login');
+        router.replace('/login');
       }
     } else if (requiresConsent) {
       // If authenticated but consent required, navigate to consent
-      if (segs[1] !== 'consent') {
-        router.replace('/(auth)/consent');
+      if (segs[0] !== 'consent' && segs[1] !== 'consent') {
+        router.replace('/consent');
       }
     } else {
       // If authenticated and consented, navigate to main tabs
@@ -45,7 +45,7 @@ function RootLayoutNav() {
 
   return (
     <>
-      <StatusBar style="dark" backgroundColor="#ffffff" />
+      <StatusBar style="dark" />
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />

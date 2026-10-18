@@ -5,6 +5,7 @@
   "scripts": {
     "dev:api": "pnpm --filter @maheall/api dev",
     "dev:web": "pnpm --filter @maheall/web dev",
+    "dev:app": "pnpm --filter @maheall/app start",
     "build:api": "pnpm --filter @maheall/api build",
     "build:web": "pnpm --filter @maheall/web build",
     "lint": "pnpm -r lint",
@@ -13,5 +14,13 @@
   },
   "devDependencies": {
     "typescript": "^5.4.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "@react-native/codegen": "0.86.3",
+      "@react-native/js-polyfills": "0.86.3",
+      "@react-native/community-cli-plugin": "0.86.3",
+      "@react-native/gradle-plugin": "0.86.3"
+    }
   }
 }

@@ -32,11 +32,6 @@
     "plugins": [
       "expo-router"
     ],
-    "scheme": "maheall",
-    "extra": {
-      "eas": {
-        "projectId": "maheall-member-app"
-      }
-    }
+    "scheme": "maheall"
   }
 }

@@ -17,6 +17,7 @@
   "dependencies": {
     "@fastify/cookie": "^9.0.0",
     "@fastify/cors": "^8.0.0",
+    "@fastify/static": "^7.0.0",
     "@maheall/shared": "workspace:*",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.0.0",

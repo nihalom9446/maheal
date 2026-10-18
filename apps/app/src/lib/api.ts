@@ -11,8 +11,8 @@ import {
   TodayPrayerTimesDto,
   PrayerMonthTimesDto,
 } from '@maheall/shared';
-
-const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'http://localhost:3001/api/v1';
+declare const process: { env?: { EXPO_PUBLIC_API_URL?: string } };
+const API_BASE_URL = process?.env?.EXPO_PUBLIC_API_URL || 'http://192.168.20.13:3001/api/v1';
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,

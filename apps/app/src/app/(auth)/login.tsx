@@ -49,7 +49,7 @@ export default function LoginScreen() {
     try {
       await sendOtp(formattedPhone);
       router.push({
-        pathname: '/(auth)/verify-otp',
+        pathname: '/verify-otp',
         params: { phone: formattedPhone },
       });
     } catch {
